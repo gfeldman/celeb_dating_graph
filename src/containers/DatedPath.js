@@ -7,8 +7,6 @@ import {easeBounce} from 'd3-ease'
 
 class DatedPath extends Component{
 
-
-
   constructor(props){
     super(props)
     this.createPath = this.createPath.bind(this)
@@ -35,6 +33,13 @@ class DatedPath extends Component{
     }
     return false
   }
+
+  componentWillUpdate(){
+    const node = this.node
+    select(node)
+      .selectAll(".circleGroups")
+      .data([]).exit().remove()
+  }
   componentDidUpdate(){
     this.createPath()
   }
@@ -56,43 +61,44 @@ _createPath(nodes){
     let height = this.height
     let duration = 2500
     let radius = 45
+    var nodeGroups = select(node)
+                        .style("border","1px solid black")
+                        .append("g")
+                        .selectAll(".circleGroups")
+                        .data(nodes)
+                        .enter()
+                        .append("g")
+                        .attr("class","circleGroups")
+                        .attr("transform", function(d,i) {
+                              return "translate(" + i*width + "," + 0 + ")"
+                              })
 
-    select(node)
-      .select(".circleGroups")
-      .data([]).exit().remove()
+        nodeGroups.append("circle")
+                  .attr("class","celebNode")
+                  .attr("r",radius)
+                  .style("fill","white")
+                  .style("stroke","black")
+                  .style("stroke-width","2")
 
-      var initialNode = select(node)
-                    .style("border","1px solid black")
-                    .append("g")
-                    .selectAll(".circleGroups")
-                    .data(nodes)
-                .enter()
-                .append("g")
-                .attr("class","circleGroups")
-                .attr("transform", function(d,i) {
-                  return "translate(" + i*width + "," + 0 + ")"
-                })
-
-  initialNode.append("circle")
-    .attr("class","celebNode")
-    .attr("r",radius)
-    .style("fill","white")
-    .style("stroke","black")
-    .style("stroke-width","2")
-
-  initialNode.append("text")
-    .text( d => d.name)
-    .style("text-anchor","middle")
-    .style("fill","#555")
-    .style("font-size",14)
+        nodeGroups.append("text")
+                  .text( d => d.name)
+                  .style("text-anchor","middle")
+                  .style("fill","#555")
+                  .style("font-size",14)
 
 
-    initialNode.transition()
-              .duration(duration)
-              .ease(easeBounce)
-              .attr("transform", function(d,i) {
-                    return "translate(" + ((i === 0)?(i + 0.1)*width :(i - 0.1)*width)  + "," + (height/2) + ")"
-                    })
+        const translateEven = function(d,i){
+          return(
+            "translate(" +
+            ((i === 0)?(i + 0.1)*width :(i - 0.1)*width)  +
+            "," + (height/2)
+            + ")"
+          )
+        }
+        nodeGroups.transition()
+                  .duration(duration)
+                  .ease(easeBounce)
+                  .attr("transform", translateEven)
 
   }
 

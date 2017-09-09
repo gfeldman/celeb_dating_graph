@@ -6,42 +6,41 @@ class DatedTable extends Component {
 
 constructor(props) {
   super(props);
+  this.data = [{
+    id: 1,
+    name: "Kit Harington",
+    age: 30,
+    occupation: "Actor",
+    zodiac: "Pisces"
+  },
+  {
+    id: 2,
+    name: "Anna Kendrick",
+    age: 50,
+    occupation: "Actor",
+    zodiac: "Virgo"
+  },
+  {
+    id: 3,
+    name: "Beavis",
+    age: 15,
+    occupation: "Actor",
+    zodiac: "Pisces"
+  }]
 }
 
-  static defaultProps = {
-    data: [{
-      id: 1,
-      name: "Kit Harington",
-      age: 30,
-      occupation: "Actor",
-      zodiac: "Pisces"
-    },
-    {
-      id: 2,
-      name: "Anna Kendrick",
-      age: 50,
-      occupation: "Actor",
-      zodiac: "Virgo"
-    },
-    {
-      id: 3,
-      name: "Beavis",
-      age: 15,
-      occupation: "Actor",
-      zodiac: "Pisces"
-    }]
-  }
+
 
 
 
   componentDidUpdate() {
-    
+
   }
 
 
 
   render() {
-    const data = this.props.data
+    const data = this.data
     return(
       <ReactTable
         data = {data}
