@@ -1,0 +1,16 @@
+CREATE CONSTRAINT ON (c:Celebrity) ASSERT c.id is UNIQUE;
+
+LOAD CSV WITH HEADERS FROM 
+'file:///raw/vertices.csv' as line 
+CREATE (c:Celebrity {id: TOINT(line.id), 
+					name: line.name, 
+					age: TOINT(line.age), 
+					occupation: line.occupation, 
+					zodiac_sign: line.zodiac_sign})
+
+
+
+USING PERIODIC COMMIT
+LOAD CSV WITH HEADERS FROM "file:///raw/edges.csv" AS csvLine
+MATCH (c1:Celebrity { id: toInt(csvLine.src)} ) ,(c2:Celebrity { id: toInt(csvLine.dst)} )
+CREATE (c1)-[:REL {type: csvLine.type, rumored: toBoolean(csvLine.rumored)}]->(c2)

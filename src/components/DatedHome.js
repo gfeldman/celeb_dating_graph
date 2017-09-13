@@ -1,14 +1,17 @@
 import React,{Component} from 'react'
 import DatedPath from '../containers/DatedPath'
 import DatedTable from '../containers/DatedTable'
+import DatedSelect from '../containers/DatedSelect'
 import {Container} from '../styled/DatedHome'
+
 class DatedHome extends Component {
 
   constructor(props){
     super(props)
     this.onRowClick = this.onRowClick.bind(this)
-    this.state = {clicked_row: "none"}
+    this.state = {clicked_row: null}
   }
+
 
   componentWillMount() {
     let height = window.innerHeight
@@ -19,21 +22,10 @@ class DatedHome extends Component {
     })
   }
 
-
-
   onRowClick = (state, rowInfo, column, instance) => {
       return {
           onClick: e => {
-              console.log('A Td Element was clicked!')
-              console.log('it produced this event:', e)
-              console.log('It was in this column:', column)
-              console.log('It was in this row:', rowInfo)
-              console.log('It was in this table instance:', instance)
-              const res =  {name: rowInfo.row.name,
-                          age: rowInfo.row.age,
-                          occupation: rowInfo.row.occupation,
-                          zodiac: rowInfo.row.zodiac}
-              console.log(res)
+              const res =  rowInfo.row.id
               this.setState({ clicked_row: res })
           }
       }
@@ -46,6 +38,7 @@ class DatedHome extends Component {
     } = this.state
     return(
       <Container>
+          {/*<DatedSelect/>*/}
           <DatedPath
             height = {height}
             width = {width}
